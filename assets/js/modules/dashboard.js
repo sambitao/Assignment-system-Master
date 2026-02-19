@@ -2,13 +2,10 @@ import { fetchJobs } from "../services/jobService.js";
 
 let chart;
 
-document.addEventListener("viewChanged", async e => {
-  if (e.detail !== "dashboard") return;
-
+async function renderDashboard() {
+  const jobs = await fetchJobs();
   const container = document.getElementById("view-dashboard");
   container.innerHTML = "<canvas id='chart'></canvas>";
-
-  const jobs = await fetchJobs();
 
   const count = {};
   jobs.forEach(j => {
@@ -24,4 +21,10 @@ document.addEventListener("viewChanged", async e => {
       datasets: [{ data: Object.values(count) }]
     }
   });
+}
+
+document.addEventListener("viewChanged", e => {
+  if (e.detail === "dashboard") renderDashboard();
 });
+
+document.addEventListener("dataChanged", renderDashboard);
