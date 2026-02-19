@@ -1,15 +1,17 @@
-import { fetchJobs } from "../services/jobService.js";
+import { fetchAssignments } from "../services/jobService.js";
 
 let chart;
 
 async function renderDashboard() {
-  const jobs = await fetchJobs();
+  const data = await fetchAssignments();
   const container = document.getElementById("view-dashboard");
   container.innerHTML = "<canvas id='chart'></canvas>";
 
   const count = {};
-  jobs.forEach(j => {
-    count[j.status] = (count[j.status] || 0) + 1;
+
+  data.forEach(item => {
+    const status = item.status || "Unknown";
+    count[status] = (count[status] || 0) + 1;
   });
 
   if (chart) chart.destroy();
@@ -18,7 +20,9 @@ async function renderDashboard() {
     type: "doughnut",
     data: {
       labels: Object.keys(count),
-      datasets: [{ data: Object.values(count) }]
+      datasets: [{
+        data: Object.values(count)
+      }]
     }
   });
 }
@@ -26,5 +30,3 @@ async function renderDashboard() {
 document.addEventListener("viewChanged", e => {
   if (e.detail === "dashboard") renderDashboard();
 });
-
-document.addEventListener("dataChanged", renderDashboard);
