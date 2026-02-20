@@ -1,0 +1,7 @@
+{
+  "name": "Assignment Interruption System ",
+  "description": "A high-end management system for technical task assignments, featuring analytics dashboards, a dynamic calendar, subcontractor round-robin queueing, and an integrated Gemini AI assistant for task optimization.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
